@@ -77,7 +77,7 @@ pose-estimation pilot on players near the ball, for round 2; not used in any mod
 | asset | how we used it |
 |---|---|
 | Tactical ATD | the only model input for the submitted file |
-| Homography (tactical) | to project the ATD into the video for the video ball (`gbm_v8n` only, not submitted) and to check alignment: ATD frame id - 1 = video frame = homography row, confirmed by a paired-distance test that rejects deliberate one-frame slips |
+| Homography (tactical) | to project the ATD into the video for the video ball (`gbm_v8n` only, not submitted) and to check alignment: ATD frame id - 1 = video frame = homography row, confirmed by a paired-distance test that rejects deliberate one-frame slips. This checks that the inputs line up; it does not involve our possession output |
 | Tactical video | our own ball detection in the ball gaps (`gbm_v8n` only, not submitted); a short pose-estimation pilot on players near the ball, for round 2, not used in any model |
 | Smart Tagging | **not a model input.** We used its 59 set-piece tags, averaged together, to measure how often the ball is visible during a stoppage (about 30%) and how soon play resumes after one. Both set values in the degrader. We also used its attacking phases as a label-free check (section 6). |
 | Broadcast video | dropped, never downloaded (13 GB). The tactical camera already covers the pitch and is frame-aligned with the ATD. |
@@ -149,7 +149,7 @@ These rules label the sample games we train and score on. We never label the pro
 - **Challenges.** A duel, a challenge, a card or a foul received changes nothing on its own.
 - **Loose balls.** A loose ball stays with the team that lost it until the other team plays it.
 - **Where we drew the line on touches.** We built two definitions:
-  - **Controlled**, our reading of CHALLENGE.md: a team takes the ball only with a completed pass, a shot, a set
+  - **Controlled**, our reading of CHALLENGE.md (`ref/CHALLENGE.md`, from the organiser repository): a team takes the ball only with a completed pass, a shot, a set
     piece, or one second of holding it.
   - **Touch:** any on-ball action by the other team takes the ball, including a one-touch deflection.
 
@@ -168,7 +168,8 @@ These rules label the sample games we train and score on. We never label the pro
   of possession lengths between our two definitions and closer to touch, and after our bench reproduced the order of
   the organiser's published full-match baseline scores only under touch. Those examples cannot come from the
   17-possession public window, so they were most likely computed on the full match. Like the baseline scores, they
-  are published in EVALUATION.md for every team. The reading above is our justification now. It agrees with that
+  are published in EVALUATION.md for every team. That published material is the only full-match information we
+  used; no private ground truth was read. The reading above is our justification now. It agrees with that
   choice, but it is not how we made it.
 
   We did not rewrite the controlled rules to match. Both definitions are reported throughout.
@@ -252,7 +253,7 @@ little about the other ninety, so we treat it as a pipeline check, not an estima
 
 ## 10. Reproduction
 
-Python 3.14 for the model, CPU only. The match bundle goes in `data/` or `$MTAH_DATA_DIR`, as the organiser's
+Python 3.14 for the model, CPU only, tested on Linux x86-64. The match bundle goes in `data/` or `$MTAH_DATA_DIR`, as the organiser's
 `data/README.md` describes. It is never in the repository.
 
 ```bash
@@ -263,8 +264,8 @@ PYTHONPATH=src .venv/bin/python -m mtah.models.learned --gt touch --tag gbm5_nog
 PYTHONPATH=src .venv/bin/python -m mtah.predict --model gbm_v5_nogap --competition --out runs/submission/MurrayInsights.csv
 ```
 
-From a fresh clone this took 19 minutes end to end (training about 16 minutes on 6 cores). The output was
-byte-identical to our submission (SHA-256 `2a7c130b...`). `mtah.predict` runs the organiser's `validate_submission`
+From a fresh clone this took 20 to 25 minutes end to end (training 16 to 20 minutes on 6 cores). The output was
+byte-identical to our submission (SHA-256 `2a7c130bdf0942833536588831f3d55dfa9eb5dd49e7747485599635fb5f7ef5`). `mtah.predict` runs the organiser's `validate_submission`
 on what it writes. The video-ball model's commands are in the README.
 
 Any row of the model log reproduces with

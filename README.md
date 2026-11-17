@@ -70,7 +70,8 @@ downloaded and checked by sha256 (`src/mtah/video/weights.py`).
 
 ## Status
 
-- **Submission: `gbm_v5_nogap`** (`MurrayInsights.csv`, SHA-256 `2a7c130b...`), locked on 2026-11-13.
+- **Submission: `gbm_v5_nogap`** (`MurrayInsights.csv`, SHA-256
+  `2a7c130bdf0942833536588831f3d55dfa9eb5dd49e7747485599635fb5f7ef5`), locked on 2026-11-13.
   `gbm_v8n` (`899be8ee...` on our machine) is not submitted and not eligible: its simulated video channel was
   tuned on the detector's track from the provided video, and the organisers' clarification email requires tuned
   parameters to come from external data only.
