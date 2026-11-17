@@ -1,0 +1,16 @@
+# Licensed match data: never commit, never publish (RULES.md "The data")
+data/*
+!data/.gitkeep
+*.mp4
+# Organiser repo (cloned reference, MIT, tracked upstream) and third-party sample data
+ref/
+external/
+# Submissions and anything frame-level about the provided match (a correct file is a copy of the ground truth)
+runs/
+*.csv
+!tests/fixtures/*.csv
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
